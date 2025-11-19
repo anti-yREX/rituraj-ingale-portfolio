@@ -1,0 +1,72 @@
+# .github/workflows/main.yml
+name: Build and Deploy to GitHub Pages
+
+# Controls when the workflow should run
+on:
+  # Triggers the workflow on pushes to the 'main' branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This job handles the build process
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Sets up the Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Specify your required Node.js version
+
+      # Installs project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Builds the project (this will generate the 'dist' folder)
+      - name: Build project
+        run: npm run build
+
+      # Uploads the 'dist' folder as an artifact to be used by the deploy job
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # The folder containing your built files
+
+  # This job handles the deployment to GitHub Pages
+  deploy:
+    # Requires the 'build' job to complete successfully before running
+    needs: build
+
+    # Ensures the deployment happens only if the build succeeded and the push was to the main branch
+    if: success()
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Gives the GITHUB_TOKEN write permission to the content and pages
+    permissions:
+      pages: write      # Required for deploying to GitHub Pages
+      id-token: write   # Required for OpenID Connect (OIDC) authentication
+
+    # Environment setup for GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # Retrieves the URL after deployment
+
+    # Deployment steps
+    steps:
+      # Deploy using the GitHub Pages Action
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # The official GitHub Pages deployment action
