@@ -160,7 +160,7 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
   const colorScheme = getColorScheme(colorSchemeIndex);
 
   return (
-    <div className="absolute inset-0 z-0 flex items-center justify-end pr-4 md:pr-8 opacity-30">
+    <div className="absolute inset-0 z-0 flex items-center justify-end pr-4 md:pr-8 opacity-30 height-100%">
         {gameOver && (
             <div className="absolute z-20 text-center right-4 md:right-8 px-4 py-2 rounded" style={{ 
               backgroundColor: colorScheme.tetris.backgroundColor + 'E6',

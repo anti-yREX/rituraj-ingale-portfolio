@@ -63,7 +63,11 @@ const App: React.FC = () => {
               {portfolioData.footer.note}
             </p>
              <p className={`text-xs ${currentScheme.mainContent.text} opacity-50 mt-2 transition-all duration-500`}>
-              {portfolioData.footer.contact}
+              <div className="flex flex-row gap-2 justify-center">
+                <a href={`https://github.com/${portfolioData.footer.contact.github}`}>GitHub</a>
+                <a href={`https://www.linkedin.com/in/${portfolioData.footer.contact.linkedin}`}>LinkedIn</a>
+                <a href={`mailto:${portfolioData.footer.contact.email}`}>Email</a>
+              </div>
             </p>
           </footer>
         </div>

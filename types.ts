@@ -6,7 +6,11 @@ export interface PortfolioData {
   skills: string[];
   footer: {
     note: string;
-    contact: string;
+    contact: {
+      email: string;
+      linkedin: string;
+      github: string;
+    };
   };
 }
 
