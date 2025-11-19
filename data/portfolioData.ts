@@ -2,16 +2,23 @@
 import type { PortfolioData } from '../types';
 
 export const portfolioData: PortfolioData = {
-  name: "John Doe",
-  title: "Senior Web Architect & Full-Stack Developer",
-  about: "With over 12 years of hands-on experience, I specialize in crafting robust, scalable, and intuitive web applications. My passion lies in solving complex problems with clean, efficient code and creating seamless user experiences. I thrive in collaborative environments and am committed to mentoring and elevating the skills of my team.",
+  name: "Rituraj Ingale",
+  title: "Senior Software Developer",
+  about: "Full-stack engineer with 5+ years owning Node.js, React, and AWS solutions. I love being the go-to person for thorny problems, architecting secure, scalable platforms, and mentoring teams toward clean, high-quality delivery.",
   skills: [
-    "React", "TypeScript", "Node.js", "GraphQL", "Next.js",
-    "Tailwind CSS", "Vue.js", "Python", "Django", "PostgreSQL",
-    "MongoDB", "Docker", "Kubernetes", "AWS", "CI/CD", "Web Sockets"
+    "JavaScript", "TypeScript", "React", "Next.js", "Redux",
+    "React Query", "Material UI", "Tailwind CSS", "Storybook",
+    "HTML", "CSS", "SASS", "Node.js", "Express.js",
+    "GraphQL", "REST APIs", "WebSockets", "WebRTC", "Serverless",
+    "PostgreSQL", "MySQL", "DynamoDB", "MongoDB", "Redis",
+    "AWS", "Docker", "Kubernetes", "NGINX", "CI/CD", "GitHub Actions"
   ],
   footer: {
     note: "P.S. You can play Tetris in the background. Use Arrow Keys to move and 'Up' to rotate.",
-    contact: "Find me on [LinkedIn] or [GitHub]."
+    contact: {
+      email: "ritu.raj.ingale@gmail.com",
+      linkedin: "riturajingale",
+      github: "anti-yREX",
+    }
   }
 };
