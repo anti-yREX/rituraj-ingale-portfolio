@@ -1,7 +1,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import type { Player, Board, TetrominoShape } from '../types';
-import { BOARD_WIDTH, createBoard, randomTetromino } from '../constants';
+import { BOARD_WIDTH, createBoard, randomTetromino } from '../constants/tetris';
 
 export const useTetris = () => {
   const [player, setPlayer] = useState<Player>({

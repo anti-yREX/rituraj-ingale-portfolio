@@ -1,9 +1,17 @@
 
+export interface SkillCategory {
+  label: string;
+  description: string;
+  items: string[];
+}
+
 export interface PortfolioData {
   name: string;
   title: string;
+  tagline: string;
   about: string;
   skills: string[];
+  skillCategories: SkillCategory[];
   footer: {
     note: string;
     contact: {

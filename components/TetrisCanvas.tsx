@@ -1,16 +1,18 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { useTetris } from '../hooks/useTetris';
-import { TETROMINOS, BOARD_WIDTH, BOARD_HEIGHT, getColorScheme } from '../constants';
+import { TETROMINOS, BOARD_WIDTH, BOARD_HEIGHT, getTetrisTheme } from '../constants/tetris';
 
 interface TetrisCanvasProps {
   onScoreChange?: (score: number) => void;
-  colorSchemeIndex: number;
 }
 
-const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeIndex }) => {
+const ARROW_KEY_CODES = new Set([37, 38, 39, 40]);
+
+const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [themeIndex, setThemeIndex] = useState(0);
   const { board, handleKeyDown, gameOver, startGame, player, rowsCleared } = useTetris();
 
   useEffect(() => {
@@ -18,6 +20,15 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
       onScoreChange(rowsCleared);
     }
   }, [rowsCleared, onScoreChange]);
+
+  // Cycle this canvas's own accent color on every row clear (cosmetic, scoped to Tetris only).
+  const prevRowsCleared = useRef(rowsCleared);
+  useEffect(() => {
+    if (rowsCleared > prevRowsCleared.current) {
+      setThemeIndex(prev => prev + 1);
+    }
+    prevRowsCleared.current = rowsCleared;
+  }, [rowsCleared]);
 
   // Auto-start game on mount
   useEffect(() => {
@@ -27,9 +38,12 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
 
   useEffect(() => {
     const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if (ARROW_KEY_CODES.has(event.keyCode)) {
+        event.preventDefault();
+      }
       handleKeyDown({ keyCode: event.keyCode });
     };
-    
+
     window.addEventListener('keydown', handleGlobalKeyDown);
     return () => {
       window.removeEventListener('keydown', handleGlobalKeyDown);
@@ -39,18 +53,18 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
   const calculateCanvasSize = () => {
     const canvas = canvasRef.current;
     if (!canvas) return { blockSize: 20, width: BOARD_WIDTH * 20, height: BOARD_HEIGHT * 20 };
-    
+
     const container = canvas.parentElement;
     if (!container) return { blockSize: 20, width: BOARD_WIDTH * 20, height: BOARD_HEIGHT * 20 };
-    
+
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
-    
+
     const blockSizeByWidth = containerWidth / BOARD_WIDTH;
     const blockSizeByHeight = containerHeight / BOARD_HEIGHT;
-    
+
     const blockSize = Math.floor(Math.min(blockSizeByWidth, blockSizeByHeight));
-    
+
     return {
       blockSize,
       width: BOARD_WIDTH * blockSize,
@@ -61,37 +75,36 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const context = canvas.getContext('2d');
     if (!context) return;
-    
+
     const { blockSize, width, height } = calculateCanvasSize();
-    
+
     canvas.width = width;
     canvas.height = height;
     setCanvasSize({ width, height });
 
-    // Get current color scheme
-    const colorScheme = getColorScheme(colorSchemeIndex);
+    const theme = getTetrisTheme(themeIndex);
 
-    // Fill background with scheme color
-    context.fillStyle = colorScheme.tetris.backgroundColor;
+    // Fill background with theme color
+    context.fillStyle = theme.backgroundColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw board - blocks with scheme color
+    // Draw board - blocks with theme color
     board.forEach((row, y) => {
       row.forEach((cell, x) => {
         if (cell[0] !== 0) {
           const tetrominoKey = cell[0];
           if (TETROMINOS[tetrominoKey]) {
-            context.fillStyle = colorScheme.tetris.blockColor;
+            context.fillStyle = theme.blockColor;
             context.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
           }
         }
       });
     });
 
-    // Draw current falling piece - with scheme color
+    // Draw current falling piece - with theme color
     if (player && player.tetromino) {
       // Find the tetromino type from the shape array
       let tetrominoType: string | number | undefined;
@@ -104,9 +117,9 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
         }
         if (tetrominoType) break;
       }
-      
+
       if (tetrominoType && tetrominoType !== 0 && TETROMINOS[tetrominoType]) {
-        context.fillStyle = colorScheme.tetris.blockColor;
+        context.fillStyle = theme.blockColor;
         player.tetromino.forEach((row, y) => {
           row.forEach((value, x) => {
             if (value !== 0) {
@@ -121,9 +134,9 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
 
     // Draw grid lines - 2px equivalent thick borders (drawn after blocks so they appear inside blocks too)
     const lineWidth = Math.max(2, blockSize * 0.1); // At least 2px or 10% of block size
-    context.strokeStyle = colorScheme.tetris.gridLineColor;
+    context.strokeStyle = theme.gridLineColor;
     context.lineWidth = lineWidth;
-    
+
     // Draw vertical lines (columns)
     for (let x = 0; x <= BOARD_WIDTH; x++) {
       context.beginPath();
@@ -131,7 +144,7 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
       context.lineTo(x * blockSize, canvas.height);
       context.stroke();
     }
-    
+
     // Draw horizontal lines (rows)
     for (let y = 0; y <= BOARD_HEIGHT; y++) {
       context.beginPath();
@@ -140,13 +153,13 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
       context.stroke();
     }
 
-  }, [board, player, canvasSize, colorSchemeIndex]);
+  }, [board, player, canvasSize, themeIndex]);
 
   useEffect(() => {
     const handleResize = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      
+
       const { width, height } = calculateCanvasSize();
       canvas.width = width;
       canvas.height = height;
@@ -157,30 +170,38 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange, colorSchemeI
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const colorScheme = getColorScheme(colorSchemeIndex);
+  const theme = getTetrisTheme(themeIndex);
 
   return (
-    <div className="absolute inset-0 z-0 flex items-center justify-end pr-4 md:pr-8 opacity-30 height-100%">
-        {gameOver && (
-            <div className="absolute z-20 text-center right-4 md:right-8 px-4 py-2 rounded" style={{ 
-              backgroundColor: colorScheme.tetris.backgroundColor + 'E6',
-              color: colorScheme.tetris.blockColor 
-            }}>
-                <h2 className="text-4xl font-bold">GAME OVER</h2>
-                <button 
-                    onClick={startGame}
-                    className="mt-4 px-6 py-2 rounded-lg border-2 transition"
-                    style={{
-                      backgroundColor: colorScheme.tetris.blockColor,
-                      color: colorScheme.tetris.backgroundColor,
-                      borderColor: colorScheme.tetris.blockColor
-                    }}
-                >
-                    Press Space to Restart
-                </button>
-            </div>
-        )}
-        <canvas ref={canvasRef} style={{ display: 'block', backgroundColor: colorScheme.tetris.backgroundColor }} />
+    <div className="relative flex items-center justify-center w-full h-full">
+      {gameOver && (
+        <div
+          className="absolute z-20 text-center px-4 py-2 rounded"
+          style={{
+            backgroundColor: theme.backgroundColor + 'E6',
+            color: theme.blockColor,
+          }}
+        >
+          <h2 className="text-2xl font-bold font-mono">GAME OVER</h2>
+          <button
+            onClick={startGame}
+            className="mt-4 px-6 py-2 rounded-lg border-2 transition font-mono"
+            style={{
+              backgroundColor: theme.blockColor,
+              color: theme.backgroundColor,
+              borderColor: theme.blockColor,
+            }}
+          >
+            Press Space to Restart
+          </button>
+        </div>
+      )}
+      <canvas
+        ref={canvasRef}
+        role="img"
+        aria-label="Playable Tetris game"
+        style={{ display: 'block', backgroundColor: theme.backgroundColor }}
+      />
     </div>
   );
 };
