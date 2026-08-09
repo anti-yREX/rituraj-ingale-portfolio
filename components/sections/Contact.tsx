@@ -41,7 +41,6 @@ const Contact: React.FC = () => {
           Email
         </a>
       </div>
-      <p className="mt-12 text-xs text-gray-500">{portfolioData.footer.note}</p>
     </section>
   );
 };

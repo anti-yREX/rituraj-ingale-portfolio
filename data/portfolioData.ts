@@ -3,9 +3,9 @@ import type { PortfolioData } from '../types';
 
 export const portfolioData: PortfolioData = {
   name: "Rituraj Ingale",
-  title: "Senior Software Developer",
+  title: "Software Engineer",
   tagline: "Building calm, resilient systems for what comes next.",
-  about: "Full-stack engineer with 5+ years owning Node.js, React, and AWS solutions. I love being the go-to person for thorny problems, architecting secure, scalable platforms, and mentoring teams toward clean, high-quality delivery.",
+  about: "Full-stack engineer with 6+ years owning Node.js, React, and AWS solutions. I love being the go-to person for thorny problems, architecting secure, scalable platforms, and mentoring teams toward clean, high-quality delivery.",
   skills: [
     "JavaScript", "TypeScript", "React", "Next.js", "Redux",
     "React Query", "Material UI", "Tailwind CSS", "Storybook",
@@ -37,7 +37,6 @@ export const portfolioData: PortfolioData = {
     },
   ],
   footer: {
-    note: "P.S. You can play Tetris in the background. Use Arrow Keys to move and 'Up' to rotate.",
     contact: {
       email: "ritu.raj.ingale@gmail.com",
       linkedin: "riturajingale",

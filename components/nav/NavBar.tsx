@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useTypingAnimation } from '../../hooks/useTypingAnimation';
 
 interface NavBarProps {
   onPlayTetris: () => void;
@@ -11,45 +12,8 @@ const NAV_LINKS = [
   { href: '#contact', label: 'CONTACT' },
 ];
 
-const WORDS = ['yREX', 'Rituraj Ingale', 'RI'];
-const TYPING_SPEED = 100;
-const DELETING_SPEED = 100;
-const PAUSE_DURATION = 1000;
-
 const NavBar: React.FC<NavBarProps> = ({ onPlayTetris }) => {
-  const [text, setText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(TYPING_SPEED);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    const handleTyping = () => {
-      const currentWordIndex = loopNum % WORDS.length;
-      const fullText = WORDS[currentWordIndex];
-
-      if (isDeleting) {
-        setText(fullText.substring(0, text.length - 1));
-        setTypingSpeed(DELETING_SPEED);
-      } else {
-        setText(fullText.substring(0, text.length + 1));
-        setTypingSpeed(TYPING_SPEED);
-      }
-
-      if (!isDeleting && text === fullText) {
-        setTypingSpeed(PAUSE_DURATION);
-        setIsDeleting(true);
-      } else if (isDeleting && text === '') {
-        setIsDeleting(false);
-        setLoopNum(loopNum + 1);
-        setTypingSpeed(TYPING_SPEED);
-      }
-    };
-
-    timer = setTimeout(handleTyping, typingSpeed);
-    return () => clearTimeout(timer);
-  }, [text, isDeleting, loopNum, typingSpeed]);
+  const text = useTypingAnimation();
 
   return (
     <>

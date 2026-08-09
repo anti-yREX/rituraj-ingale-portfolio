@@ -13,7 +13,6 @@ export interface PortfolioData {
   skills: string[];
   skillCategories: SkillCategory[];
   footer: {
-    note: string;
     contact: {
       email: string;
       linkedin: string;
