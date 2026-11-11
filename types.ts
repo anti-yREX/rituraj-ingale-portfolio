@@ -9,6 +9,8 @@ export interface PortfolioData {
   name: string;
   title: string;
   tagline: string;
+  contactLine: string;
+  specs: { label: string; value: string }[];
   about: string;
   skills: string[];
   skillCategories: SkillCategory[];

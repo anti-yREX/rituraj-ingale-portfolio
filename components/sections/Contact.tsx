@@ -1,45 +1,38 @@
-
 import React from 'react';
 import { portfolioData } from '../../data/portfolioData';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { EASE_DECEL } from '../../constants/theme';
+import SectionHead from '../layout/SectionHead';
 
 const Contact: React.FC = () => {
-  const { ref, isVisible } = useScrollReveal<HTMLElement>();
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
   const { contact } = portfolioData.footer;
 
+  const doors = [
+    { label: 'GitHub', value: `@${contact.github}`, href: `https://github.com/${contact.github}`, external: true },
+    { label: 'LinkedIn', value: `in/${contact.linkedin}`, href: `https://www.linkedin.com/in/${contact.linkedin}`, external: true },
+    { label: 'Email', value: contact.email, href: `mailto:${contact.email}`, external: false },
+  ];
+
   return (
-    <section
-      id="contact"
-      ref={ref}
-      className="relative max-w-2xl mx-auto px-4 py-24 md:py-32 text-center"
-      style={{
-        transition: `opacity 900ms ${EASE_DECEL}, transform 900ms ${EASE_DECEL}`,
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
-      }}
-    >
-      <h2 className="font-mono text-xs tracking-widest text-cyan-300/80 uppercase mb-4">Contact</h2>
-      <p className="text-lg text-gray-200/90 mb-8">Let's build something calm and resilient together.</p>
-      <div className="flex flex-row flex-wrap gap-4 justify-center font-mono text-sm">
-        <a
-          href={`https://github.com/${contact.github}`}
-          className="px-4 py-2 rounded-full border border-white/10 text-gray-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:shadow-[0_0_20px_-4px_rgba(34,211,238,0.5)] transition-all duration-500"
-        >
-          GitHub
-        </a>
-        <a
-          href={`https://www.linkedin.com/in/${contact.linkedin}`}
-          className="px-4 py-2 rounded-full border border-white/10 text-gray-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:shadow-[0_0_20px_-4px_rgba(34,211,238,0.5)] transition-all duration-500"
-        >
-          LinkedIn
-        </a>
-        <a
-          href={`mailto:${contact.email}`}
-          className="px-4 py-2 rounded-full border border-white/10 text-gray-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:shadow-[0_0_20px_-4px_rgba(34,211,238,0.5)] transition-all duration-500"
-        >
-          Email
-        </a>
+    <section id="contact" className="section">
+      <div ref={ref} className={`wrap reveal${isVisible ? ' is-visible' : ''}`}>
+        <SectionHead no="03" title="Contact" note="Sec. 03 / Access points" />
+        <p className="contact__lead">{portfolioData.contactLine}</p>
+        <div className="doors concrete-plain">
+          {doors.map((door, index) => (
+            <a
+              key={door.label}
+              href={door.href}
+              className="door"
+              {...(door.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <span className="door__no label" aria-hidden="true">A{index + 1}</span>
+              <span className="door__label display">{door.label}</span>
+              <span className="door__value">{door.value}</span>
+              <span className="door__arrow" aria-hidden="true">{door.external ? '↗' : '→'}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 
 import type { TetrominoShape } from '../types';
+import { CONCRETE_50, CONCRETE_200, CONCRETE_400, RUST, SODIUM, SODIUM_DEEP, VOID } from './theme';
 
 export const BOARD_WIDTH = 12;
 export const BOARD_HEIGHT = 20;
@@ -86,16 +87,10 @@ export type TetrisTheme = {
   gridLineColor: string;
 };
 
+// Blocks are cast from the site palette: concrete, sodium light, rust.
 export const TETRIS_THEMES: TetrisTheme[] = [
-  { backgroundColor: '#0a0a0a', blockColor: '#22d3ee', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#a78bfa', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#e879f9', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#34d399', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#f472b6', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#38bdf8', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#fbbf24', gridLineColor: '#0a0a0a' },
-  { backgroundColor: '#0a0a0a', blockColor: '#818cf8', gridLineColor: '#0a0a0a' },
-];
+  CONCRETE_200, SODIUM, CONCRETE_50, RUST, CONCRETE_400, SODIUM_DEEP,
+].map(blockColor => ({ backgroundColor: VOID, blockColor, gridLineColor: VOID }));
 
 export const getTetrisTheme = (index: number): TetrisTheme =>
   TETRIS_THEMES[index % TETRIS_THEMES.length];

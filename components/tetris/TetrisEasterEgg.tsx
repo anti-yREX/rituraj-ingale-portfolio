@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import TetrisCanvas from '../TetrisCanvas';
 
@@ -28,32 +27,27 @@ const TetrisEasterEgg: React.FC<TetrisEasterEggProps> = ({ open, onClose }) => {
   if (!open) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Tetris easter egg"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
-    >
-      <div className="relative w-full max-w-md flex flex-col items-center gap-4 bg-[#0a0a0a] border border-white/10 rounded-xl p-4 md:p-6 shadow-[0_0_60px_-12px_rgba(34,211,238,0.4)]">
-        <div className="flex items-center justify-between w-full">
-          <p className="font-mono text-xs tracking-widest text-cyan-300/80">
-            ROWS CLEARED: {score}
+    <div role="dialog" aria-modal="true" aria-label="Tetris easter egg" className="bay">
+      <div className="bay__frame concrete-plain">
+        <div className="bay__strip hazard" aria-hidden="true" />
+        <div className="bay__bar">
+          <p className="bay__score label">
+            Rows cleared <strong>{String(score).padStart(2, '0')}</strong>
           </p>
           <button
             ref={closeButtonRef}
+            type="button"
             onClick={onClose}
             aria-label="Close Tetris"
-            className="font-mono text-xs tracking-widest px-3 py-1.5 rounded-full border border-white/10 text-gray-300 hover:text-cyan-200 hover:border-cyan-400/40 transition-all duration-500"
+            className="bay__close label on-dark"
           >
-            ESC / CLOSE
+            Esc / Close
           </button>
         </div>
-        <div className="w-full aspect-[12/20] max-h-[70vh]">
+        <div className="bay__board">
           <TetrisCanvas onScoreChange={setScore} />
         </div>
-        <p className="font-mono text-[10px] text-gray-500 text-center">
-          Arrow keys to move, Up to rotate, Down to drop.
-        </p>
+        <p className="bay__hint label">← → move · ↑ rotate · ↓ drop</p>
       </div>
     </div>
   );

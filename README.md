@@ -8,3 +8,7 @@ Explore this portfolio to discover:
 - 🏆 Notable achievements
 
 Let’s build something amazing together!
+
+## Design
+
+The site follows **BÉTON**, a brutalist / industrial design system. Tokens, components and rules are documented in [DESIGN.md](DESIGN.md).
