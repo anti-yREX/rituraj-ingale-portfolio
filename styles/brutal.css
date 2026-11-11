@@ -1,0 +1,1107 @@
+/* ==========================================================================
+   BÉTON — brutalist / industrial design system
+   Source of truth for tokens and components. See DESIGN.md.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------------------------------------------------- */
+
+:root {
+  /* Concrete: warm-grey, from sunlit face to deep recess */
+  --concrete-50: #e4e1da;
+  --concrete-100: #d6d3cb;
+  --concrete-200: #c2bfb6;
+  --concrete-300: #a8a59c;
+  --concrete-400: #8b8880;
+  --concrete-500: #6d6b65;
+  --concrete-700: #3f3e3a;
+  --ink: #161614;
+  --void: #0e0e0d;
+
+  /* Accents: interior light and oxidised steel */
+  --sodium: #ffa01f;
+  --sodium-deep: #e07a00;
+  --rust: #8f3410;
+
+  /* Type */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --text-label: 0.72rem;
+  --text-small: 0.875rem;
+  --text-body: 1.0625rem;
+  --text-lead: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  --text-h3: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  --text-h2: clamp(3rem, 1.5rem + 7vw, 7.5rem);
+
+  /* Structure */
+  --line: 3px;
+  --line-thin: 1px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(72px, 10vw, 144px);
+  --max: 1440px;
+  --nav-h: 56px;
+
+  /* Depth: shadows are cast, never blurred */
+  --cast-sm: 6px 6px 0 var(--ink);
+  --cast-md: 12px 12px 0 var(--ink);
+  --cast-light: 12px 12px 0 var(--sodium);
+
+  /* Motion: mass moves fast and stops dead */
+  --ease-slab: cubic-bezier(0.2, 0, 0, 1);
+  --dur-snap: 120ms;
+  --dur-slab: 480ms;
+
+  /* Surface textures */
+  --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tex-streak: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='900'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.018 .0016' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0 0 0 -.19'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+  --tex-hazard: repeating-linear-gradient(-45deg, var(--sodium) 0 12px, var(--ink) 12px 24px);
+}
+
+/* ---------- 2. Base ------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--concrete-200);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+dl,
+dd {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+::selection {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: var(--line) solid var(--ink);
+  outline-offset: 3px;
+}
+
+.on-dark :focus-visible,
+.on-dark:focus-visible {
+  outline-color: var(--sodium);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- 3. Surfaces -------------------------------------------------- */
+
+/* Poured concrete: grain + weathering streaks + formwork panel seams + tie holes */
+.concrete {
+  background-color: var(--concrete-200);
+  background-image:
+    radial-gradient(circle at 20px 20px, rgba(22, 22, 20, 0.28) 0 2.5px, transparent 3.5px),
+    linear-gradient(to right, rgba(22, 22, 20, 0.13) 0 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 22, 20, 0.13) 0 1px, transparent 1px),
+    var(--tex-streak),
+    var(--tex-grain);
+  background-size: 320px 200px, 320px 200px, 320px 200px, 600px 900px, 220px 220px;
+}
+
+/* Smaller cast pieces: grain only, no seams */
+.concrete-plain {
+  background-color: var(--concrete-100);
+  background-image: var(--tex-grain);
+  background-size: 220px 220px;
+}
+
+/* Deep recess / night */
+.void {
+  background-color: var(--void);
+  background-image: var(--tex-grain);
+  background-size: 220px 220px;
+  color: var(--concrete-100);
+}
+
+.hazard {
+  background-image: var(--tex-hazard);
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- 4. Type primitives ------------------------------------------- */
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.84;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- 5. Reveal ---------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--dur-slab) var(--ease-slab),
+    transform var(--dur-slab) var(--ease-slab);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- 6. Nav ------------------------------------------------------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  height: var(--nav-h);
+  background-color: var(--concrete-100);
+  background-image: var(--tex-grain);
+  border-bottom: var(--line) solid var(--ink);
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  min-width: 12ch;
+  padding-inline: var(--gutter) 24px;
+  margin-right: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.nav__cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 2px;
+  background: var(--ink);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.nav__links {
+  display: none;
+}
+
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 22px;
+  border-left: var(--line-thin) solid var(--ink);
+  transition: background-color var(--dur-snap) linear, color var(--dur-snap) linear;
+}
+
+.nav__link span {
+  color: var(--concrete-500);
+  transition: color var(--dur-snap) linear;
+}
+
+.nav__link:hover {
+  background: var(--ink);
+  color: var(--concrete-50);
+}
+
+.nav__link:hover span {
+  color: var(--sodium);
+}
+
+.nav__play {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 22px var(--gutter);
+  border: 0;
+  border-left: var(--line) solid var(--ink);
+  background: var(--sodium);
+  font-weight: 600;
+  transition: background-color var(--dur-snap) linear, color var(--dur-snap) linear;
+}
+
+.nav__play:hover {
+  background: var(--ink);
+  color: var(--sodium);
+}
+
+.nav__play-icon {
+  display: grid;
+  grid-template-columns: repeat(3, 5px);
+  gap: 1px;
+}
+
+.nav__play-icon i {
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+}
+
+.nav__play-icon i:nth-child(1),
+.nav__play-icon i:nth-child(3) {
+  visibility: hidden;
+}
+
+@media (min-width: 760px) {
+  .nav__links {
+    display: flex;
+  }
+}
+
+/* ---------- 7. Hero ------------------------------------------------------ */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--nav-h));
+  border-bottom: var(--line) solid var(--ink);
+}
+
+.hero__main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  align-items: end;
+  padding-block: clamp(32px, 5vw, 72px);
+}
+
+.hero__copy {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.hero__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(16px, 2.4vw, 32px);
+}
+
+.tag {
+  display: inline-block;
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--concrete-50);
+}
+
+.tag--light {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+.hero__name {
+  font-size: clamp(4.25rem, 30cqi, 19rem);
+  line-height: 0.8;
+  margin-left: -0.03em;
+}
+
+.hero__name span {
+  display: block;
+}
+
+.hero__tagline {
+  max-width: 30ch;
+  margin-top: clamp(24px, 3vw, 44px);
+  padding-left: 20px;
+  border-left: 12px solid var(--ink);
+  font-size: var(--text-lead);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.hero__figure {
+  position: relative;
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 460px);
+  border: var(--line) solid var(--ink);
+  background-color: var(--concrete-50);
+  background-image: var(--tex-grain);
+  box-shadow: var(--cast-md);
+}
+
+.hero__figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero__figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-top: var(--line) solid var(--ink);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: var(--line) solid var(--ink);
+  background-color: var(--concrete-100);
+  background-image: var(--tex-grain);
+}
+
+.specs__cell {
+  padding: 16px var(--gutter);
+  border-right: var(--line-thin) solid var(--ink);
+  border-bottom: var(--line-thin) solid var(--ink);
+}
+
+.specs__cell dt {
+  color: var(--concrete-700);
+  margin-bottom: 6px;
+}
+
+.specs__cell dd {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 1rem + 1.2vw, 2rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@media (min-width: 960px) {
+  .hero__main {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(32px, 5vw, 80px);
+  }
+
+  .hero__figure {
+    justify-self: end;
+    margin-bottom: 12px;
+  }
+
+  .specs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .specs__cell {
+    border-bottom: 0;
+  }
+
+  .specs__cell:last-child {
+    border-right: 0;
+  }
+}
+
+/* Elevation drawing */
+.elev__mass {
+  fill: var(--concrete-300);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+
+.elev__mass--far {
+  fill: var(--concrete-400);
+}
+
+.elev__recess {
+  fill: var(--ink);
+}
+
+.elev__boards {
+  stroke: var(--ink);
+  stroke-width: 0.6;
+  opacity: 0.16;
+}
+
+.elev__cast {
+  fill: var(--ink);
+  opacity: 0.42;
+}
+
+.elev__ground {
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+
+.elev__dim {
+  stroke: var(--ink);
+  stroke-width: 1;
+  fill: none;
+}
+
+.elev__text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  fill: var(--ink);
+}
+
+.elev__win {
+  fill: var(--ink);
+  transition: fill 1.8s linear;
+}
+
+.elev__win.is-lit {
+  fill: var(--sodium);
+}
+
+.elev__win:hover {
+  fill: var(--sodium);
+  transition-duration: 0s;
+}
+
+/* ---------- 8. Ticker ---------------------------------------------------- */
+
+.ticker {
+  overflow: hidden;
+  border-bottom: var(--line) solid var(--ink);
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: conveyor 60s linear infinite;
+}
+
+.ticker:hover .ticker__track {
+  animation-play-state: paused;
+}
+
+.ticker__list {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.ticker__item {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 0 14px 28px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticker__item::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: var(--sodium);
+}
+
+@keyframes conveyor {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- 9. Section head ---------------------------------------------- */
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.sec-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  column-gap: clamp(16px, 2.5vw, 32px);
+  margin-bottom: clamp(32px, 5vw, 72px);
+  padding-bottom: clamp(12px, 1.6vw, 20px);
+  border-bottom: var(--line) solid currentColor;
+}
+
+.sec-head__no {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px 12px 6px;
+  background: var(--ink);
+  color: var(--concrete-50);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 1rem + 3vw, 4rem);
+  line-height: 0.85;
+}
+
+.void .sec-head__no {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+.sec-head__title {
+  font-size: var(--text-h2);
+}
+
+.sec-head__note {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+}
+
+.void .sec-head__note {
+  color: var(--concrete-300);
+}
+
+@media (min-width: 760px) {
+  .sec-head {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .sec-head__note {
+    grid-column: auto;
+    margin: 0 0 0.6em;
+    text-align: right;
+  }
+}
+
+/* ---------- 10. About ---------------------------------------------------- */
+
+.about__grid {
+  display: grid;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.about__text {
+  font-size: var(--text-lead);
+  font-weight: 500;
+  line-height: 1.35;
+  max-width: 40ch;
+  text-wrap: pretty;
+}
+
+.about__text::first-line {
+  font-weight: 600;
+}
+
+.plate {
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--cast-md);
+}
+
+.plate__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--concrete-50);
+}
+
+.plate__row {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr);
+  border-top: var(--line-thin) solid var(--ink);
+}
+
+.plate__row dt {
+  padding: 14px;
+  border-right: var(--line-thin) solid var(--ink);
+  color: var(--concrete-700);
+}
+
+.plate__row dd {
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: 500;
+}
+
+@media (min-width: 960px) {
+  .about__grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+/* ---------- 11. Stack (the building) ------------------------------------- */
+
+.stack {
+  border-block: var(--line) solid var(--ink);
+}
+
+.stack__floors {
+  display: flex;
+  flex-direction: column;
+}
+
+.slab {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  color: var(--ink);
+  border: var(--line) solid var(--ink);
+}
+
+.slab + .slab {
+  margin-top: 20px;
+}
+
+.slab__level {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 10px;
+  border-bottom: var(--line) solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  line-height: 0.85;
+}
+
+.slab__level small {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+.slab__body {
+  padding: 20px 18px;
+}
+
+.slab__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-h3);
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.slab__desc {
+  max-width: 34ch;
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.slab__windows {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 6px;
+  align-content: start;
+  padding: 18px;
+  border-top: var(--line) solid var(--ink);
+  background: rgba(22, 22, 20, 0.12);
+}
+
+.window {
+  display: flex;
+  align-items: flex-end;
+  min-height: 62px;
+  padding: 8px 10px;
+  background: var(--ink);
+  color: var(--concrete-100);
+  box-shadow: inset 5px 5px 0 rgba(0, 0, 0, 0.55);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color 900ms linear, color 900ms linear;
+}
+
+.window:hover {
+  background: var(--sodium);
+  color: var(--ink);
+  transition-duration: 0s;
+}
+
+@media (min-width: 960px) {
+  .slab {
+    grid-template-columns: 150px minmax(0, 4fr) minmax(0, 7fr);
+  }
+
+  /* Cantilever: floors butt together and overhang alternately */
+  .slab + .slab {
+    margin-top: calc(-1 * var(--line));
+  }
+
+  .slab:nth-child(odd) {
+    margin-right: 7%;
+  }
+
+  .slab:nth-child(even) {
+    margin-left: 7%;
+  }
+
+  .slab:nth-child(3) {
+    margin-left: 3%;
+    margin-right: 4%;
+  }
+
+  .slab__level {
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 16px 14px;
+    border-bottom: 0;
+    border-right: var(--line) solid var(--ink);
+  }
+
+  .slab__body {
+    padding: 24px 24px 28px;
+  }
+
+  .slab__windows {
+    border-top: 0;
+    border-left: var(--line) solid var(--ink);
+  }
+}
+
+/* ---------- 12. Contact -------------------------------------------------- */
+
+.contact__lead {
+  max-width: 24ch;
+  margin-bottom: clamp(32px, 4vw, 56px);
+  font-size: var(--text-lead);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.doors {
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--cast-md);
+}
+
+.door {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(14px, 2.5vw, 36px);
+  padding: clamp(14px, 2vw, 26px) clamp(14px, 2.4vw, 32px);
+  transition: background-color var(--dur-snap) linear, padding-left var(--dur-slab) var(--ease-slab);
+}
+
+.door + .door {
+  border-top: var(--line) solid var(--ink);
+}
+
+.door__no {
+  color: var(--concrete-700);
+}
+
+.door__label {
+  font-size: clamp(2.75rem, 1.5rem + 7vw, 7rem);
+}
+
+.door__value {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: 500;
+}
+
+.door__arrow {
+  display: grid;
+  place-items: center;
+  width: clamp(40px, 5vw, 64px);
+  aspect-ratio: 1;
+  background: var(--ink);
+  color: var(--concrete-50);
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 1rem + 0.8vw, 1.75rem);
+  transition: transform var(--dur-slab) var(--ease-slab);
+}
+
+.door:hover,
+.door:focus-visible {
+  background: var(--sodium);
+  padding-left: clamp(26px, 4.4vw, 64px);
+}
+
+.door:hover .door__no,
+.door:focus-visible .door__no {
+  color: var(--ink);
+}
+
+.door:hover .door__arrow,
+.door:focus-visible .door__arrow {
+  transform: translate(4px, -4px);
+}
+
+@media (min-width: 760px) {
+  .door {
+    grid-template-columns: 3.5em minmax(0, 1fr) auto auto;
+  }
+
+  .door__value {
+    display: block;
+  }
+}
+
+/* ---------- 13. Title block (footer) ------------------------------------- */
+
+.titleblock {
+  border-top: var(--line) solid var(--ink);
+}
+
+.titleblock__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-inline: var(--line-thin) solid var(--concrete-500);
+}
+
+.titleblock__cell {
+  padding: 16px;
+  border-right: var(--line-thin) solid var(--concrete-500);
+  border-bottom: var(--line-thin) solid var(--concrete-500);
+}
+
+.titleblock__cell:nth-child(2n) {
+  border-right: 0;
+}
+
+.titleblock__cell dt {
+  margin-bottom: 8px;
+  color: var(--concrete-400);
+}
+
+.titleblock__cell dd {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.titleblock__top {
+  color: var(--sodium);
+  border-bottom: 2px solid currentColor;
+}
+
+.titleblock__top:hover {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+.titleblock__strip {
+  height: 14px;
+}
+
+@media (min-width: 960px) {
+  .titleblock__grid {
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+  }
+
+  .titleblock__cell,
+  .titleblock__cell:nth-child(2n) {
+    border-right: var(--line-thin) solid var(--concrete-500);
+    border-bottom: 0;
+  }
+
+  .titleblock__cell:last-child {
+    border-right: 0;
+  }
+}
+
+/* ---------- 14. Tetris bay ----------------------------------------------- */
+
+.bay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(14, 14, 13, 0.92);
+}
+
+.bay__frame {
+  width: 100%;
+  max-width: 420px;
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--cast-light);
+}
+
+.bay__strip {
+  height: 12px;
+  border-bottom: var(--line) solid var(--ink);
+}
+
+.bay__bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border-bottom: var(--line) solid var(--ink);
+}
+
+.bay__score {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+}
+
+.bay__score strong {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.bay__close {
+  padding: 0 16px;
+  border: 0;
+  border-left: var(--line) solid var(--ink);
+  background: var(--ink);
+  color: var(--concrete-50);
+  transition: background-color var(--dur-snap) linear, color var(--dur-snap) linear;
+}
+
+.bay__close:hover {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+.bay__board {
+  width: 100%;
+  aspect-ratio: 12 / 20;
+  max-height: 64vh;
+  padding: 12px;
+  background: var(--void);
+}
+
+.bay__hint {
+  padding: 10px 14px;
+  border-top: var(--line) solid var(--ink);
+  color: var(--concrete-700);
+}
+
+.tetris {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.tetris__over {
+  position: absolute;
+  z-index: 2;
+  padding: 18px 20px;
+  border: var(--line) solid var(--ink);
+  background: var(--concrete-100);
+  color: var(--ink);
+  text-align: center;
+  box-shadow: var(--cast-light);
+}
+
+.tetris__over h2 {
+  font-size: 3rem;
+}
+
+.tetris__restart {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border: 0;
+  background: var(--ink);
+  color: var(--concrete-50);
+}
+
+.tetris__restart:hover {
+  background: var(--sodium);
+  color: var(--ink);
+}
+
+/* ---------- 15. Reduced motion ------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ticker__track,
+  .nav__cursor {
+    animation: none;
+  }
+
+  .ticker {
+    overflow-x: auto;
+  }
+
+  .door,
+  .door__arrow,
+  .elev__win,
+  .window {
+    transition: none;
+  }
+}

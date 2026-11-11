@@ -1,30 +1,42 @@
-
 import React from 'react';
-import ParticleField from './ParticleField';
-import GlassOrb from './GlassOrb';
+import Elevation from './Elevation';
 import { portfolioData } from '../../data/portfolioData';
 
 const Hero: React.FC = () => {
+  const [firstName, ...rest] = portfolioData.name.split(' ');
+
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4"
-    >
-      <ParticleField />
+    <section id="home" className="hero">
+      <div className="hero__main wrap">
+        <div className="hero__copy">
+          <p className="hero__kicker label">
+            <span className="tag">Sec. 00</span>
+            <span className="tag tag--light">{portfolioData.title}</span>
+          </p>
+          <h1 className="hero__name display" aria-label={portfolioData.name}>
+            <span aria-hidden="true">{firstName}</span>
+            <span aria-hidden="true">{rest.join(' ')}</span>
+          </h1>
+          <p className="hero__tagline">{portfolioData.tagline}</p>
+        </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center gap-6 md:gap-8">
-        <GlassOrb />
-
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-          {portfolioData.name}
-        </h1>
-        <p className="font-mono text-sm md:text-base tracking-widest uppercase text-cyan-300/80">
-          {portfolioData.title}
-        </p>
-        <p className="max-w-xl text-base md:text-lg text-gray-300/80 leading-relaxed">
-          {portfolioData.tagline}
-        </p>
+        <figure className="hero__figure">
+          <Elevation />
+          <figcaption className="hero__figcaption label">
+            <span>Fig. 01 — Elevation A</span>
+            <span>1:200</span>
+          </figcaption>
+        </figure>
       </div>
+
+      <dl className="specs">
+        {portfolioData.specs.map(spec => (
+          <div className="specs__cell" key={spec.label}>
+            <dt className="label">{spec.label}</dt>
+            <dd>{spec.value}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 };

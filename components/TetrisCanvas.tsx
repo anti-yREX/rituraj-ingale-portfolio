@@ -173,26 +173,12 @@ const TetrisCanvas: React.FC<TetrisCanvasProps> = ({ onScoreChange }) => {
   const theme = getTetrisTheme(themeIndex);
 
   return (
-    <div className="relative flex items-center justify-center w-full h-full">
+    <div className="tetris">
       {gameOver && (
-        <div
-          className="absolute z-20 text-center px-4 py-2 rounded"
-          style={{
-            backgroundColor: theme.backgroundColor + 'E6',
-            color: theme.blockColor,
-          }}
-        >
-          <h2 className="text-2xl font-bold font-mono">GAME OVER</h2>
-          <button
-            onClick={startGame}
-            className="mt-4 px-6 py-2 rounded-lg border-2 transition font-mono"
-            style={{
-              backgroundColor: theme.blockColor,
-              color: theme.backgroundColor,
-              borderColor: theme.blockColor,
-            }}
-          >
-            Press Space to Restart
+        <div className="tetris__over">
+          <h2 className="display">Game over</h2>
+          <button type="button" onClick={startGame} className="tetris__restart label">
+            Press space to restart
           </button>
         </div>
       )}

@@ -1,9 +1,8 @@
-
-export const ACCENT_CYAN = '#22d3ee';
-export const ACCENT_MAGENTA = '#e879f9';
-export const ACCENT_PURPLE = '#a78bfa';
-
-export const BG_BASE = '#0a0a0a';
-
-// Decelerated ("slow in, slow out") easing used for hover glows and scroll reveals.
-export const EASE_DECEL = 'cubic-bezier(0.16, 1, 0.3, 1)';
+// Mirrors the tokens in styles/brutal.css for places CSS variables can't reach (canvas drawing).
+export const CONCRETE_50 = '#e4e1da';
+export const CONCRETE_200 = '#c2bfb6';
+export const CONCRETE_400 = '#8b8880';
+export const VOID = '#0e0e0d';
+export const SODIUM = '#ffa01f';
+export const SODIUM_DEEP = '#e07a00';
+export const RUST = '#b4491c';

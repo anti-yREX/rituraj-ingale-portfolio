@@ -5,6 +5,13 @@ export const portfolioData: PortfolioData = {
   name: "Rituraj Ingale",
   title: "Software Engineer",
   tagline: "Building calm, resilient systems for what comes next.",
+  contactLine: "Let's build something calm and resilient together.",
+  specs: [
+    { label: "Role", value: "Software Engineer" },
+    { label: "Experience", value: "6+ years" },
+    { label: "Discipline", value: "Full-stack" },
+    { label: "Core", value: "Node.js / React / AWS" },
+  ],
   about: "Full-stack engineer with 6+ years owning Node.js, React, and AWS solutions. I love being the go-to person for thorny problems, architecting secure, scalable platforms, and mentoring teams toward clean, high-quality delivery.",
   skills: [
     "JavaScript", "TypeScript", "React", "Next.js", "Redux",
